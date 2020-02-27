@@ -53,11 +53,19 @@ var setup = document.querySelector('.setup');
 var setupOpen = document.querySelector('.setup-open');
 var setupOpenIcon = document.querySelector('.setup-open-icon');
 var setupClose = document.querySelector('.setup-close');
+var setName = document.querySelector('.setup-user-name');
 
-setupOpenIcon.tabIndex = 1;
+setupOpenIcon.tabIndex = 0;
 
-setupOpenIcon.addEventListener("focus", (event) => {
-  console.log('sdfsdfsdf')
+
+
+setupOpenIcon.addEventListener("focusin", (event) => {
+
+  setupOpenIcon.addEventListener('keydown', (event) => {
+    if (event.keyCode == 13) {
+      setup.classList.remove('hidden');
+    }
+  })
 });
 
 setupOpen.addEventListener('click', () => {
@@ -66,7 +74,12 @@ setupOpen.addEventListener('click', () => {
 
 window.addEventListener('keydown', (event) => {
   if (event.keyCode == 27) {
-    setup.classList.add('hidden');
+    setName.addEventListener("focusin", (event) => {
+      event.preventDefault
+    })
+    setName.addEventListener("focusout", (event) => {
+      setup.classList.add('hidden')
+    })
   }
 })
 
