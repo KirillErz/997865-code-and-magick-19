@@ -7,7 +7,7 @@ var WIZARD_COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 10
 
 var WIZARD_EYE_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
 
-document.querySelector('.setup').classList.remove('hidden');
+//document.querySelector('.setup').classList.remove('hidden');
 document.querySelector('.setup-similar').classList.remove('hidden');
 
 var similarListElement = document.querySelector('.setup-similar-list');
@@ -48,3 +48,29 @@ for (var i = 0; i < wizards.length; i++) {
   fragment.appendChild(wizardElement);
 }
 similarListElement.appendChild(fragment);
+
+var setup = document.querySelector('.setup');
+var setupOpen = document.querySelector('.setup-open');
+var setupOpenIcon = document.querySelector('.setup-open-icon');
+var setupClose = document.querySelector('.setup-close');
+
+setupOpenIcon.tabIndex = 1;
+
+setupOpenIcon.addEventListener("focus", (event) => {
+  console.log('sdfsdfsdf')
+});
+
+setupOpen.addEventListener('click', () => {
+  setup.classList.remove('hidden');
+})
+
+window.addEventListener('keydown', (event) => {
+  if (event.keyCode == 27) {
+    setup.classList.add('hidden');
+  }
+})
+
+setupClose.addEventListener('click', () => {
+  setup.classList.add('hidden');
+})
+
