@@ -56,10 +56,18 @@ var setupClose = document.querySelector('.setup-close');
 var setName = document.querySelector('.setup-user-name');
 
 setupOpenIcon.tabIndex = 0;
+setupClose.tabIndex = 0;
 
 
+setupClose.addEventListener("focusin", () => {
+  setupClose.addEventListener('keydown', (event) => {
+    if (event.keyCode == 13) {
+      setup.classList.add('hidden');
+    }
+  })
+})
 
-setupOpenIcon.addEventListener("focusin", (event) => {
+setupOpenIcon.addEventListener("focusin", () => {
 
   setupOpenIcon.addEventListener('keydown', (event) => {
     if (event.keyCode == 13) {
@@ -72,18 +80,26 @@ setupOpen.addEventListener('click', () => {
   setup.classList.remove('hidden');
 })
 
-window.addEventListener('keydown', (event) => {
-  if (event.keyCode == 27) {
-    setName.addEventListener("focusin", (event) => {
-      event.preventDefault
-    })
-    setName.addEventListener("focusout", (event) => {
-      setup.classList.add('hidden')
-    })
-  }
+var flagFocus = true;
+setName.addEventListener("focusin", (focusin) => {
+  flagFocus = !focusin;
+
 })
 
+setName.addEventListener("focusout", (focusout) => {
+  flagFocus = focusout;
+})
+
+
+window.addEventListener('keydown', (keydown) => {
+  if (keydown.keyCode == 27 && flagFocus) {
+    setup.classList.add('hidden')
+  }
+  //keydown.preventDefault();
+})
+
+
 setupClose.addEventListener('click', () => {
-  setup.classList.add('hidden');
+    setup.classList.add('hidden');
 })
 
