@@ -7,6 +7,10 @@ var WIZARD_COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 10
 
 var WIZARD_EYE_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
 
+var ESC_KEY = 'Escape';
+
+var ENTER_KEY = 'Enter';
+
 //document.querySelector('.setup').classList.remove('hidden');
 document.querySelector('.setup-similar').classList.remove('hidden');
 
@@ -54,33 +58,50 @@ var setupOpen = document.querySelector('.setup-open');
 var setupOpenIcon = document.querySelector('.setup-open-icon');
 var setupClose = document.querySelector('.setup-close');
 var setName = document.querySelector('.setup-user-name');
-
-setupOpenIcon.tabIndex = 0;
-setupClose.tabIndex = 0;
-
-
-setupClose.addEventListener("focusin", () => {
-  setupClose.addEventListener('keydown', (event) => {
-    if (event.keyCode == 13) {
-      setup.classList.add('hidden');
-    }
-  })
-})
-
-setupOpenIcon.addEventListener("focusin", () => {
-
-  setupOpenIcon.addEventListener('keydown', (event) => {
-    if (event.keyCode == 13) {
-      setup.classList.remove('hidden');
-    }
-  })
-});
-
-setupOpen.addEventListener('click', () => {
-  setup.classList.remove('hidden');
-})
+var userNameInput = setup.querySelector('.setup-user-name');
+var fillCoat = document.querySelector('setup-wizard');
 
 var flagFocus = true;
+
+var onPopupEscPress = function (evt) {
+  if (evt.key === ESC_KEY && flagFocus) {
+    closePopup();
+  }
+};
+
+var openPopup = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+
+
+setupClose.addEventListener('keydown', (evt) => {
+  if (evt.key == ENTER_KEY) {
+    closePopup();
+  }
+})
+
+
+
+
+  setupOpenIcon.addEventListener('keydown', (evt) => {
+    if (evt.key == ENTER_KEY) {
+      openPopup();
+    }
+  })
+
+
+setupOpen.addEventListener('click', () => {
+  openPopup();
+})
+
+
 setName.addEventListener("focusin", (focusin) => {
   flagFocus = !focusin;
 
@@ -92,14 +113,40 @@ setName.addEventListener("focusout", (focusout) => {
 
 
 window.addEventListener('keydown', (keydown) => {
-  if (keydown.keyCode == 27 && flagFocus) {
+  if (keydown.key == ESC_KEY && flagFocus) {
     setup.classList.add('hidden')
   }
-  //keydown.preventDefault();
 })
 
 
 setupClose.addEventListener('click', () => {
-    setup.classList.add('hidden');
+  closePopup();
 })
 
+
+
+
+userNameInput.addEventListener('invalid', function (evt) {
+  if (userNameInput.validity.tooShort) {
+    userNameInput.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else if (userNameInput.validity.tooLong) {
+    userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов');
+  } else if (userNameInput.validity.valueMissing) {
+    userNameInput.setCustomValidity('Обязательное поле');
+  } else {
+    userNameInput.setCustomValidity('');
+  }
+});
+
+userNameInput.addEventListener('input', function (evt) {
+  var target = evt.target;
+  if (target.value.length < MIN_NAME_LENGTH) {
+    target.setCustomValidity(
+      'Имя должно состоять минимум из ' +
+      MIN_NAME_LENGTH +
+      '-х символов'
+    );
+  } else {
+    target.setCustomValidity('');
+  }
+});
