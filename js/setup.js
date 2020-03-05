@@ -59,7 +59,41 @@ var setupOpenIcon = document.querySelector('.setup-open-icon');
 var setupClose = document.querySelector('.setup-close');
 var setName = document.querySelector('.setup-user-name');
 var userNameInput = setup.querySelector('.setup-user-name');
-var fillCoat = document.querySelector('setup-wizard');
+var wizardStyle = document.querySelector('.setup-wizard');
+
+
+var wizardCoatFill = wizardStyle.querySelector('.wizard-coat');
+var wizardEyesFill = wizardStyle.querySelector('.wizard-eyes');
+
+var fireballFill = document.querySelector('.setup-fireball-wrap');
+var count = 0;
+
+fireballFill.addEventListener('click', () => {
+  if (count < WIZARD_COAT_COLOR.length) {
+    fireballFill.style.background = WIZARD_COAT_COLOR[count++];
+  }
+  else {
+    count = 0;
+  }
+})
+
+wizardEyesFill.addEventListener('click', () => {
+  if (count < WIZARD_COAT_COLOR.length) {
+    wizardStyle.querySelector('.wizard-eyes').style.fill = WIZARD_COAT_COLOR[count++];
+  }
+  else {
+    count = 0;
+  }
+})
+
+wizardCoatFill.addEventListener('click', () => {
+  if (count < WIZARD_COAT_COLOR.length) {
+    wizardStyle.querySelector('.wizard-coat').style.fill = WIZARD_COAT_COLOR[count++];
+  }
+  else {
+    count = 0;
+  }
+})
 
 var flagFocus = true;
 
