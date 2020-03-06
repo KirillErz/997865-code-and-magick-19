@@ -7,6 +7,8 @@ var WIZARD_COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 10
 
 var WIZARD_EYE_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
 
+var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+
 var ESC_KEY = 'Escape';
 
 var ENTER_KEY = 'Enter';
@@ -66,32 +68,41 @@ var wizardCoatFill = wizardStyle.querySelector('.wizard-coat');
 var wizardEyesFill = wizardStyle.querySelector('.wizard-eyes');
 
 var fireballFill = document.querySelector('.setup-fireball-wrap');
-var count = 0;
 
+
+
+var countFireballColor = 0;
+var form = document.forms[0];
 fireballFill.addEventListener('click', () => {
-  if (count < WIZARD_COAT_COLOR.length) {
-    fireballFill.style.background = WIZARD_COAT_COLOR[count++];
+  if (FIREBALL_COLOR.length > 0) {
+    fireballFill.style.background = FIREBALL_COLOR[FIREBALL_COLOR.length-1];
+    form.elements.namedItem('fireball-color').value = FIREBALL_COLOR[FIREBALL_COLOR.length-1];
+    FIREBALL_COLOR.length--
   }
   else {
-    count = 0;
+    countFireballColor = 0;
   }
 })
-
+var countEyeColor = 0;
 wizardEyesFill.addEventListener('click', () => {
-  if (count < WIZARD_COAT_COLOR.length) {
-    wizardStyle.querySelector('.wizard-eyes').style.fill = WIZARD_COAT_COLOR[count++];
+  if (countEyeColor < WIZARD_EYE_COLOR.length) {
+    wizardStyle.querySelector('.wizard-eyes').style.fill = WIZARD_EYE_COLOR[countEyeColor];
+    form.elements.namedItem('eyes-color').value = WIZARD_EYE_COLOR[countEyeColor];
+    countEyeColor++
   }
   else {
-    count = 0;
+    countEyeColor = 0;
   }
 })
-
+var countCoatColor = 0;
 wizardCoatFill.addEventListener('click', () => {
-  if (count < WIZARD_COAT_COLOR.length) {
-    wizardStyle.querySelector('.wizard-coat').style.fill = WIZARD_COAT_COLOR[count++];
+  if (countCoatColor < WIZARD_COAT_COLOR.length) {
+    wizardStyle.querySelector('.wizard-coat').style.fill = WIZARD_COAT_COLOR[countCoatColor];
+    form.elements.namedItem('coat-color').value = WIZARD_COAT_COLOR[countCoatColor];
+    countCoatColor++
   }
   else {
-    count = 0;
+    countCoatColor = 0;
   }
 })
 
@@ -156,6 +167,8 @@ window.addEventListener('keydown', (keydown) => {
 setupClose.addEventListener('click', () => {
   closePopup();
 })
+
+
 
 
 
