@@ -7,7 +7,22 @@ var WIZARD_COAT_COLOR = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 10
 
 var WIZARD_EYE_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
 
-document.querySelector('.setup').classList.remove('hidden');
+var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+
+var ESC_KEY = 'Escape';
+
+var ENTER_KEY = 'Enter';
+
+var MIN_NAME_LENGTH = 5;
+
+
+var setup = document.querySelector('.setup');
+var setupOpen = document.querySelector('.setup-open');
+var setupOpenIcon = document.querySelector('.setup-open-icon');
+var setupClose = document.querySelector('.setup-close');
+var setName = document.querySelector('.setup-user-name');
+var userNameInput = setup.querySelector('.setup-user-name');
+
 document.querySelector('.setup-similar').classList.remove('hidden');
 
 var similarListElement = document.querySelector('.setup-similar-list');
@@ -48,3 +63,109 @@ for (var i = 0; i < wizards.length; i++) {
   fragment.appendChild(wizardElement);
 }
 similarListElement.appendChild(fragment);
+
+var setStyleWizard = function (wizard, partWizard, colors, inputId, elementId) {
+  var form = document.forms[0];
+  var fireballFill = document.querySelector('.setup-fireball-wrap');
+  var count = 0;
+  partWizard.addEventListener('click', function () {
+    if (count < colors.length) {
+      if (elementId === null) {
+        fireballFill.style.background = colors[count];
+      } else {
+        wizard.querySelector(elementId).style.fill = colors[count];
+      }
+      form.elements.namedItem(inputId).value = colors[count];
+      count++;
+    } else {
+      count = 0;
+    }
+  });
+};
+
+userNameInput.addEventListener('invalid', function () {
+  if (userNameInput.validity.tooShort) {
+    userNameInput.setCustomValidity('Имя должно состоять минимум из 2-х символов');
+  } else if (userNameInput.validity.tooLong) {
+    userNameInput.setCustomValidity('Имя не должно превышать 25-ти символов');
+  } else if (userNameInput.validity.valueMissing) {
+    userNameInput.setCustomValidity('Обязательное поле');
+  } else {
+    userNameInput.setCustomValidity('');
+  }
+});
+
+userNameInput.addEventListener('input', function (evt) {
+  var target = evt.target;
+  if (target.value.length < MIN_NAME_LENGTH) {
+    target.setCustomValidity(
+        'Имя должно состоять минимум из ' +
+      MIN_NAME_LENGTH +
+      '-х символов'
+    );
+  } else {
+    target.setCustomValidity('');
+  }
+});
+
+var wizardStyle = document.querySelector('.setup-wizard');
+
+var fireballFill = document.querySelector('.setup-fireball-wrap');
+setStyleWizard(wizardStyle, fireballFill, FIREBALL_COLOR, 'fireball-color', null);
+
+var wizardEyesFill = wizardStyle.querySelector('.wizard-eyes');
+setStyleWizard(wizardStyle, wizardEyesFill, WIZARD_EYE_COLOR, 'eyes-color', '.wizard-eyes');
+
+var wizardCoatFill = wizardStyle.querySelector('.wizard-coat');
+setStyleWizard(wizardStyle, wizardCoatFill, WIZARD_COAT_COLOR, 'coat-color', '.wizard-coat');
+
+var flagFocus = true;
+var onPopupEscPress = function (evt) {
+  if (evt.key === ESC_KEY && flagFocus) {
+    closePopup();
+  }
+};
+
+var openPopup = function () {
+  setup.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupEscPress);
+};
+
+var closePopup = function () {
+  setup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscPress);
+};
+
+setupClose.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    closePopup();
+  }
+});
+
+setupOpenIcon.addEventListener('keydown', function (evt) {
+  if (evt.key === ENTER_KEY) {
+    openPopup();
+  }
+});
+
+setupOpen.addEventListener('click', function () {
+  openPopup();
+});
+
+setName.addEventListener('focusin', function (evt) {
+  flagFocus = !evt;
+});
+
+setName.addEventListener('focusout', function (evt) {
+  flagFocus = evt;
+});
+
+window.addEventListener('keydown', function (keydown) {
+  if (keydown.key === ESC_KEY && flagFocus) {
+    setup.classList.add('hidden');
+  }
+});
+
+setupClose.addEventListener('click', function () {
+  closePopup();
+});
