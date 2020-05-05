@@ -9,17 +9,8 @@ var WIZARD_EYE_COLOR = ['black', 'red', 'blue', 'yellow', 'green'];
 
 var FIREBALL_COLOR = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
 
-var ESC_KEY = 'Escape';
-
-var ENTER_KEY = 'Enter';
-
-var MIN_NAME_LENGTH = 5;
-
 
 var setup = document.querySelector('.setup');
-var setupOpen = document.querySelector('.setup-open');
-var setupOpenIcon = document.querySelector('.setup-open-icon');
-var setupClose = document.querySelector('.setup-close');
 var setName = document.querySelector('.setup-user-name');
 var userNameInput = setup.querySelector('.setup-user-name');
 
@@ -119,38 +110,6 @@ setStyleWizard(wizardStyle, wizardEyesFill, WIZARD_EYE_COLOR, 'eyes-color', '.wi
 var wizardCoatFill = wizardStyle.querySelector('.wizard-coat');
 setStyleWizard(wizardStyle, wizardCoatFill, WIZARD_COAT_COLOR, 'coat-color', '.wizard-coat');
 
-var flagFocus = true;
-var onPopupEscPress = function (evt) {
-  if (evt.key === ESC_KEY && flagFocus) {
-    closePopup();
-  }
-};
-
-var openPopup = function () {
-  setup.classList.remove('hidden');
-  document.addEventListener('keydown', onPopupEscPress);
-};
-
-var closePopup = function () {
-  setup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscPress);
-};
-
-setupClose.addEventListener('keydown', function (evt) {
-  if (evt.key === ENTER_KEY) {
-    closePopup();
-  }
-});
-
-setupOpenIcon.addEventListener('keydown', function (evt) {
-  if (evt.key === ENTER_KEY) {
-    openPopup();
-  }
-});
-
-setupOpen.addEventListener('click', function () {
-  openPopup();
-});
 
 setName.addEventListener('focusin', function (evt) {
   flagFocus = !evt;
@@ -161,11 +120,13 @@ setName.addEventListener('focusout', function (evt) {
 });
 
 window.addEventListener('keydown', function (keydown) {
-  if (keydown.key === ESC_KEY && flagFocus) {
+  if (keydown.key === utils.ESC_KEY && flagFocus) {
     setup.classList.add('hidden');
   }
 });
 
-setupClose.addEventListener('click', function () {
-  closePopup();
-});
+
+
+var dialogHandle = setup.querySelector('.upload');
+
+dragging.setDragging(dialogHandle);
